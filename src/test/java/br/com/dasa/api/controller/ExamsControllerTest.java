@@ -90,58 +90,6 @@ public class ExamsControllerTest {
 	}
 
 
-
-
-//	//Deletar
-//
-//	@Test
-//	public void testDeletarExams() throws Exception {
-//
-//		examsRepository.deleteAll();
-//
-//		mvc.perform(MockMvcRequestBuilders.post("/dasa/exams/")
-//				.content(this.testCadastrarExamsJson())
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isOk());
-//
-//
-//		mvc.perform(MockMvcRequestBuilders.delete("/dasa/exams/1")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isOk());
-//	}
-//
-//	@Test
-//	public void testDeletarSemExamID() throws Exception {
-//
-//		examsRepository.deleteAll();
-//
-//		mvc.perform(MockMvcRequestBuilders.delete("/dasa/exams/1")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().is(404));
-//	}
-//
-//	@Test
-//	public void testDeletarSemExams() throws Exception {
-//
-//		examsRepository.deleteAll();
-//
-//		mvc.perform(MockMvcRequestBuilders.post("/dasa/exams/populate/")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isOk());
-//
-//		mvc.perform(MockMvcRequestBuilders.delete("/dasa/exams/1")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().is(302));
-//	}
-//
-
-
-
 	//Cadastrar Lote
 
 	@Test
@@ -210,31 +158,6 @@ public class ExamsControllerTest {
 	}
 
 
-
-
-
-//	//Deletar em Lote
-//
-//	@Test
-//	public void testDeletarLoteExams() throws Exception {
-//
-//		mvc.perform(MockMvcRequestBuilders.post("/dasa/exams/lote/")
-//				.content(this.testCadastrarLoteExamsJson())
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isOk());
-//
-//
-//		mvc.perform(MockMvcRequestBuilders.delete("/dasa/exams/lote/")
-//				.content("[1, 2, 3 ]")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isOk());
-//	}
-
-
-
-
 	//Listar Exames
 
 	@Test
@@ -257,42 +180,6 @@ public class ExamsControllerTest {
 	}
 
 
-	//Popular o banco
-
-	@Test
-	public void testPopulate() throws Exception {
-		examsRepository.deleteAll();
-
-		mvc.perform(MockMvcRequestBuilders.post("/dasa/exams/populate/")
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-	}
-
-
-
-
-
-	//Associar
-
-	@Test
-	public void testAssociarExams() throws Exception {
-
-		examsRepository.deleteAll();
-
-		mvc.perform(MockMvcRequestBuilders.post("/dasa/exams/populate/")
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-		mvc.perform(MockMvcRequestBuilders.put("/dasa/exams/associar/")
-				.content(getAssociarJson())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-	}
-
 	private String getAssociarJson() throws JsonProcessingException {
 		return new ObjectMapper().writeValueAsString(AssociarDTO.builder().idLaboratory(1L).idExame(1L).build());
 	}
@@ -305,35 +192,6 @@ public class ExamsControllerTest {
 		return new ObjectMapper().writeValueAsString(AssociarDTO.builder().idLaboratory(4L).idExame(2L).build());
 	}
 
-
-
-	//Desassociar
-
-	@Test
-	public void testDesassociarExams() throws Exception {
-
-		examsRepository.deleteAll();
-
-		mvc.perform(MockMvcRequestBuilders.post("/dasa/exams/populate/")
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-		mvc.perform(MockMvcRequestBuilders.put("/dasa/exams/associar/")
-				.content(getAssociarJson())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-		mvc.perform(MockMvcRequestBuilders.put("/dasa/exams/desassociar/")
-				.content(getAssociarJson())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-	}
-
-
-
 	//Lista Laboratórios pelo nome do Exame
 
 	@Test
@@ -341,24 +199,24 @@ public class ExamsControllerTest {
 
 		examsRepository.deleteAll();
 
-		mvc.perform(MockMvcRequestBuilders.post("/dasa/exams/populate/")
+		mvc.perform(MockMvcRequestBuilders.post("/dasa/util/populate/")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
-		mvc.perform(MockMvcRequestBuilders.put("/dasa/exams/desassociar/")
+		mvc.perform(MockMvcRequestBuilders.put("/dasa/util/desassociar/")
 				.content(getAssociarJson2())
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
-		mvc.perform(MockMvcRequestBuilders.put("/dasa/exams/desassociar/")
+		mvc.perform(MockMvcRequestBuilders.put("/dasa/util/desassociar/")
 				.content(getAssociarJson3())
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
-		mvc.perform(MockMvcRequestBuilders.get("/dasa/exams/Vacinas")
+		mvc.perform(MockMvcRequestBuilders.get("/dasa/exams/nome/Vacinas")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())

@@ -13,10 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-public class LaboratoryListDTO {
+public class LaboratoryListSemExamesEUnidadesDTO {
     private Long cod_laboratorio;
     private String nome_laboratorio;
-    private List<Exames> exames;
-    private List<Unidade> unidades;
 
 }

@@ -2,6 +2,7 @@ package br.com.dasa.api.controller;
 
 
 import br.com.dasa.api.dtos.LaboratoryDTO;
+import br.com.dasa.api.dtos.LaboratoryListDTO;
 import br.com.dasa.api.services.LaboratoryService;
 import br.com.dasa.api.util.Validar;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static br.com.dasa.api.mapper.LaboratoryMapper.dtoToLaboratory;
-import static br.com.dasa.api.mapper.LaboratoryMapper.laboratoryToDTO;
+import static br.com.dasa.api.mapper.LaboratoryMapper.*;
 import static java.util.Optional.ofNullable;
 
 @RestController
@@ -60,29 +60,19 @@ public class LaboratoryController {
 
     }
 
-//    @DeleteMapping(value = "/{id}" )
-//    public void deletar(@PathVariable("id") long id) throws ParseException {
-//        validar.validLaboratorys(id);
-//
-//        Laboratory laboratory = laboratoryService.findByIdAndStatus(id, Status.ATIVO).get();
-//        laboratory.setStatus(Status.INATIVO);
-//        laboratoryService.salvar(laboratory);
-//    }
-//
-//    @DeleteMapping(value = "lote/")
-//    public void deletarLote(@RequestBody List<Long> listaId) throws ParseException {
-//        for(Long l : listaId){
-//            deletar(l);
-//        }
-//    }
+    @GetMapping(value = "/{id}" )
+    public ResponseEntity<LaboratoryListDTO> listarLaboratoriosPorId(@PathVariable("id") long id) {
+        validar.validLaboratorys(id);
+        return ResponseEntity.ok(laboratoryListToDTO(laboratoryService.findById(id).get()));
+    }
 
     @GetMapping
-    public ResponseEntity<List<LaboratoryDTO>> listarLaboratorios() {
+    public ResponseEntity<List<LaboratoryListDTO>> listarLaboratorios() {
         return ResponseEntity.ok(
                 laboratoryService.findAll()
-                .stream()
-                .map(c -> laboratoryToDTO(c))
-                .collect(Collectors.toList()));
+                        .stream()
+                        .map(c -> laboratoryListToDTO(c))
+                        .collect(Collectors.toList()));
     }
 
 }

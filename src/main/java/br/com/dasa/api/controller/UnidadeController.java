@@ -3,6 +3,7 @@ package br.com.dasa.api.controller;
 
 import br.com.dasa.api.dtos.AssociarDTO;
 import br.com.dasa.api.dtos.LaboratoryListDTO;
+import br.com.dasa.api.dtos.LaboratoryListSemExamesEUnidadesDTO;
 import br.com.dasa.api.dtos.UnidadeDTO;
 import br.com.dasa.api.entities.Exames;
 import br.com.dasa.api.entities.Laboratory;
@@ -131,15 +132,15 @@ public class UnidadeController {
         laboratoryService.salvar(laboratory);
     }
 
-    @GetMapping(value = "/{nome}" )
-    public ResponseEntity<List<LaboratoryListDTO>> listaLaboratorioPorNomeDoExame(@PathVariable("nome") String nome) throws ParseException {
+    @GetMapping(value = "nome/{nome}" )
+    public ResponseEntity<List<LaboratoryListSemExamesEUnidadesDTO>> listaLaboratorioPorNomeDoExame(@PathVariable("nome") String nome) throws ParseException {
 
-        List<LaboratoryListDTO> lablist = new ArrayList();
+        List<LaboratoryListSemExamesEUnidadesDTO> lablist = new ArrayList();
 
         for(Laboratory lab : laboratoryService.findAll()){
             for(Unidade ex :  lab.getUnidades()){
                 if(ex.getNome_unidade().equals(nome)){
-                    lablist.add(LaboratoryListDTO.builder().cod_laboratorio(lab.getCod_laboratorio()).nome_laboratorio(lab.getNome_laboratorio()).build());
+                    lablist.add(LaboratoryListSemExamesEUnidadesDTO.builder().cod_laboratorio(lab.getCod_laboratorio()).nome_laboratorio(lab.getNome_laboratorio()).build());
                 }
             }
         }
@@ -148,11 +149,12 @@ public class UnidadeController {
     }
 
 
-    @PostMapping(value = "populate/")
-    public void populateInit() throws ParseException {
-        populate.populate();
-    }
+    @GetMapping(value = "/{id}" )
+    public UnidadeDTO unidadePorID(@PathVariable("id") long id) throws ParseException {
+        validar.validUnidade(id);
+        return  unidadeToDTO(unidadeService.findById(id).get());
 
+    }
 
     private void validHasAssociateList(Unidade unidade) {
         List<Laboratory> lab = laboratoryService.findAllByUnidades(unidade);

@@ -1,8 +1,6 @@
 package br.com.dasa.api.mapper;
 
-import br.com.dasa.api.dtos.ExamsDTO;
 import br.com.dasa.api.dtos.UnidadeDTO;
-import br.com.dasa.api.entities.Exames;
 import br.com.dasa.api.entities.Unidade;
 
 import static java.util.Optional.ofNullable;

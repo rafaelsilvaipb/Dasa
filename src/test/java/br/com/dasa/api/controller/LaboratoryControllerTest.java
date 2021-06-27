@@ -90,27 +90,6 @@ public class LaboratoryControllerTest {
 						.build());
 	}
 
-	//Deletar
-
-//	@Test
-//	public void testDeletarLaboratory() throws Exception {
-//
-//		laboratoryRepository.deleteAll();
-//
-//		mvc.perform(MockMvcRequestBuilders.post("/dasa/laboratory/")
-//				.content(this.testCadastrarLaboratoryJson())
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isOk());
-//
-//
-//		mvc.perform(MockMvcRequestBuilders.delete("/dasa/laboratory/1")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isOk());
-//	}
-
-
 	//Cadastrar Lote
 
 	@Test
@@ -171,26 +150,6 @@ public class LaboratoryControllerTest {
 
 		return new ObjectMapper().writeValueAsString(listLaboratory);
 	}
-
-
-	//Deletar em Lote
-
-//	@Test
-//	public void testDeletarLoteLaboratory() throws Exception {
-//
-//		mvc.perform(MockMvcRequestBuilders.post("/dasa/laboratory/lote/")
-//				.content(this.testCadastrarLoteLaboratoryJson())
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isOk());
-//
-//
-//		mvc.perform(MockMvcRequestBuilders.delete("/dasa/laboratory/lote/")
-//				.content("[1, 2, 3 ]")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isOk());
-//	}
 
 
 	//Listar Laboratórios

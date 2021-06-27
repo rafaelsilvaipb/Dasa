@@ -1,6 +1,7 @@
 package br.com.dasa.api.mapper;
 
 import br.com.dasa.api.dtos.LaboratoryDTO;
+import br.com.dasa.api.dtos.LaboratoryListDTO;
 import br.com.dasa.api.entities.Laboratory;
 
 import static java.util.Optional.ofNullable;
@@ -11,6 +12,16 @@ public class LaboratoryMapper {
         return LaboratoryDTO.builder()
                 .cod_laboratorio(ofNullable(laboratory.getCod_laboratorio()).orElse(null))
                 .nome_laboratorio(ofNullable(laboratory.getNome_laboratorio()).orElse(null))
+                .build();
+    }
+
+
+    public static LaboratoryListDTO laboratoryListToDTO(Laboratory laboratory) {
+        return LaboratoryListDTO.builder()
+                .cod_laboratorio(ofNullable(laboratory.getCod_laboratorio()).orElse(null))
+                .nome_laboratorio(ofNullable(laboratory.getNome_laboratorio()).orElse(null))
+                .exames(ofNullable(laboratory.getExames()).orElse(null))
+                .unidades(ofNullable(laboratory.getUnidades()).orElse(null))
                 .build();
     }
 

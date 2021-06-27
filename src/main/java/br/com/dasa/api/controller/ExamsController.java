@@ -1,12 +1,11 @@
 package br.com.dasa.api.controller;
 
 
-import br.com.dasa.api.dtos.AssociarDTO;
 import br.com.dasa.api.dtos.ExamsDTO;
 import br.com.dasa.api.dtos.LaboratoryListDTO;
+import br.com.dasa.api.dtos.LaboratoryListSemExamesEUnidadesDTO;
 import br.com.dasa.api.entities.Exames;
 import br.com.dasa.api.entities.Laboratory;
-import br.com.dasa.api.error.FoundException;
 import br.com.dasa.api.services.ExamesService;
 import br.com.dasa.api.services.LaboratoryService;
 import br.com.dasa.api.util.Populate;
@@ -69,23 +68,12 @@ public class ExamsController {
     }
 
 
-//    @DeleteMapping(value = "/{id}" )
-//    public void deletar(@PathVariable("id") long id) throws ParseException {
-//        validar.validExams(id);
-//
-//        Exams exams = examsService.findByIdAndStatus(id, Status.ATIVO).get();
-//        validHasAssociateList(exams);
-//        exams.setStatus(Status.INATIVO);
-//        examsService.salvar(exams);
-//    }
+    @GetMapping(value = "/{id}" )
+    public ExamsDTO unidadePorID(@PathVariable("id") long id) throws ParseException {
+        validar.validExams(id);
+      return  examsToDTO(examsService.findById(id).get());
 
-//
-//    @DeleteMapping(value = "lote/")
-//    public void deletarLote(@RequestBody List<Long> listaId) throws ParseException {
-//        for(Long l : listaId){
-//            deletar(l);
-//        }
-//    }
+    }
 
     @GetMapping
     public ResponseEntity<List<ExamsDTO>> listarExames() {
@@ -96,38 +84,15 @@ public class ExamsController {
                         .collect(Collectors.toList()));
     }
 
+    @GetMapping(value = "nome/{nome}" )
+    public ResponseEntity<List<LaboratoryListSemExamesEUnidadesDTO>> listaLaboratorioPorNomeDoExame(@PathVariable("nome") String nome) throws ParseException {
 
-    @PutMapping(value = "associar/" )
-    public void associar(@RequestBody AssociarDTO associarDTO) {
-        validar.validExams(associarDTO.getIdExame());
-
-        Exames exams = examsService.findById(associarDTO.getIdExame()).get();
-        Laboratory laboratory = laboratoryService.findById(associarDTO.getIdLaboratory()).get();
-        laboratory.getExames().add(exams);
-        laboratory.setExames(laboratory.getExames().stream().distinct().collect(Collectors.toList()));
-        laboratoryService.salvar(laboratory);
-    }
-
-    @PutMapping(value = "desassociar/" )
-    public void desassociar(@RequestBody AssociarDTO associarDTO) throws ParseException {
-        validar.validExams(associarDTO.getIdExame());
-        validar.validLaboratorys(associarDTO.getIdLaboratory());
-
-        Exames exams = examsService.findById(associarDTO.getIdExame()).get();
-        Laboratory laboratory = laboratoryService.findById(associarDTO.getIdLaboratory()).get();
-        laboratory.getExames().remove(exams);
-        laboratoryService.salvar(laboratory);
-    }
-
-    @GetMapping(value = "/{nome}" )
-    public ResponseEntity<List<LaboratoryListDTO>> listaLaboratorioPorNomeDoExame(@PathVariable("nome") String nome) throws ParseException {
-
-        List<LaboratoryListDTO> lablist = new ArrayList();
+        List<LaboratoryListSemExamesEUnidadesDTO> lablist = new ArrayList();
 
         for(Laboratory lab : laboratoryService.findAll()){
             for(Exames ex :  lab.getExames()){
                 if(ex.getNome_exame().equals(nome)){
-                    lablist.add(LaboratoryListDTO.builder().cod_laboratorio(lab.getCod_laboratorio()).nome_laboratorio(lab.getNome_laboratorio()).build());
+                    lablist.add(LaboratoryListSemExamesEUnidadesDTO.builder().cod_laboratorio(lab.getCod_laboratorio()).nome_laboratorio(lab.getNome_laboratorio()).build());
                 }
             }
         }
@@ -135,19 +100,5 @@ public class ExamsController {
         return ResponseEntity.ok(lablist);
     }
 
-
-    @PostMapping(value = "populate/")
-    public void populateInit() throws ParseException {
-        populate.populate();
-    }
-
-
-    private void validHasAssociateList(Exames exams) {
-        List<Laboratory> lab = laboratoryService.findAllByExams(exams);
-
-        if (!lab.isEmpty())
-            throw new FoundException("Não é possível alterar o status do exame, ele está associado com " + lab.size() +
-                    " laboratório(os).");
-    }
 
 }
