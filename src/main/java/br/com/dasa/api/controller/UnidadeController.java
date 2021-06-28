@@ -1,14 +1,10 @@
 package br.com.dasa.api.controller;
 
 
-import br.com.dasa.api.dtos.AssociarDTO;
-import br.com.dasa.api.dtos.LaboratoryListDTO;
 import br.com.dasa.api.dtos.LaboratoryListSemExamesEUnidadesDTO;
 import br.com.dasa.api.dtos.UnidadeDTO;
-import br.com.dasa.api.entities.Exames;
 import br.com.dasa.api.entities.Laboratory;
 import br.com.dasa.api.entities.Unidade;
-import br.com.dasa.api.error.FoundException;
 import br.com.dasa.api.services.ExamesService;
 import br.com.dasa.api.services.LaboratoryService;
 import br.com.dasa.api.services.UnidadeService;
@@ -47,6 +43,42 @@ public class UnidadeController {
     @Autowired
     private Populate populate;
 
+
+    @GetMapping(value = "/{id}" )
+    public UnidadeDTO unidadePorID(@PathVariable("id") long id) throws ParseException {
+        validar.validUnidade(id);
+        return  unidadeToDTO(unidadeService.findById(id).get());
+
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UnidadeDTO>> listarExames() {
+        return ResponseEntity.ok(
+                unidadeService.findAll()
+                        .stream()
+                        .map(c -> unidadeToDTO(c))
+                        .collect(Collectors.toList()));
+    }
+
+    @GetMapping(value = "nome/{nome}" )
+    public ResponseEntity<List<LaboratoryListSemExamesEUnidadesDTO>> listaLaboratorioPorNomeDoExame(@PathVariable("nome") String nome) throws ParseException {
+
+        List<LaboratoryListSemExamesEUnidadesDTO> lablist = new ArrayList();
+
+        for(Laboratory lab : laboratoryService.findAll()){
+            for(Unidade ex :  lab.getUnidades()){
+                if(ex.getNome_unidade().equals(nome)){
+                    lablist.add(LaboratoryListSemExamesEUnidadesDTO.builder().cod_laboratorio(lab.getCod_laboratorio()).nome_laboratorio(lab.getNome_laboratorio()).build());
+                }
+            }
+        }
+
+        return ResponseEntity.ok(lablist);
+    }
+
+
+
+
     @PostMapping
     public ResponseEntity<UnidadeDTO> adicionar(@RequestBody UnidadeDTO unidadeDTO) throws ParseException {
         return ResponseEntity.ok(unidadeToDTO(unidadeService.salvar(dtoToUnidade(unidadeDTO))));
@@ -72,96 +104,6 @@ public class UnidadeController {
             alterar(e);
         }
 
-    }
-
-
-//    @DeleteMapping(value = "/{id}" )
-//    public void deletar(@PathVariable("id") long id) throws ParseException {
-//        validar.validUnidade(id);
-//
-//        Exams exams = examsService.findByIdAndStatus(id, Status.ATIVO).get();
-//        validHasAssociateList(exams);
-//        exams.setStatus(Status.INATIVO);
-//        examsService.salvar(exams);
-//    }
-
-//
-//    @DeleteMapping(value = "lote/")
-//    public void deletarLote(@RequestBody List<Long> listaId) throws ParseException {
-//        for(Long l : listaId){
-//            deletar(l);
-//        }
-//    }
-
-    @GetMapping
-    public ResponseEntity<List<UnidadeDTO>> listarExames() {
-        return ResponseEntity.ok(
-                unidadeService.findAll()
-                        .stream()
-                        .map(c -> unidadeToDTO(c))
-                        .collect(Collectors.toList()));
-    }
-
-
-    @PutMapping(value = "associar/" )
-    public void associar(@RequestBody AssociarDTO associarDTO) {
-        validar.validExams(associarDTO.getIdExame());
-        validar.validLaboratorys(associarDTO.getIdLaboratory());
-        validar.validUnidade(associarDTO.getIdUnidade());
-
-        Unidade unidade = unidadeService.findById(associarDTO.getIdUnidade()).get();
-        Exames ex = examesService.findById(associarDTO.getIdExame()).get();
-        Laboratory laboratory = laboratoryService.findById(associarDTO.getIdLaboratory()).get();
-        laboratory.getUnidades().add(unidade);
-        laboratory.setUnidades(laboratory.getUnidades().stream().distinct().collect(Collectors.toList()));
-        laboratory.getExames().add(ex);
-        laboratory.setExames(laboratory.getExames().stream().distinct().collect(Collectors.toList()));
-        laboratoryService.salvar(laboratory);
-    }
-//TODO
-    @PutMapping(value = "desassociar/" )
-    public void desassociar(@RequestBody AssociarDTO associarDTO) throws ParseException {
-        validar.validExams(associarDTO.getIdExame());
-        validar.validLaboratorys(associarDTO.getIdLaboratory());
-
-        Unidade unidade = unidadeService.findById(associarDTO.getIdUnidade()).get();
-        Exames ex = examesService.findById(associarDTO.getIdExame()).get();
-        Laboratory laboratory = laboratoryService.findById(associarDTO.getIdLaboratory()).get();
-        laboratory.getUnidades().remove(unidade);
-        laboratory.getExames().remove(ex);
-        laboratoryService.salvar(laboratory);
-    }
-
-    @GetMapping(value = "nome/{nome}" )
-    public ResponseEntity<List<LaboratoryListSemExamesEUnidadesDTO>> listaLaboratorioPorNomeDoExame(@PathVariable("nome") String nome) throws ParseException {
-
-        List<LaboratoryListSemExamesEUnidadesDTO> lablist = new ArrayList();
-
-        for(Laboratory lab : laboratoryService.findAll()){
-            for(Unidade ex :  lab.getUnidades()){
-                if(ex.getNome_unidade().equals(nome)){
-                    lablist.add(LaboratoryListSemExamesEUnidadesDTO.builder().cod_laboratorio(lab.getCod_laboratorio()).nome_laboratorio(lab.getNome_laboratorio()).build());
-                }
-            }
-        }
-
-        return ResponseEntity.ok(lablist);
-    }
-
-
-    @GetMapping(value = "/{id}" )
-    public UnidadeDTO unidadePorID(@PathVariable("id") long id) throws ParseException {
-        validar.validUnidade(id);
-        return  unidadeToDTO(unidadeService.findById(id).get());
-
-    }
-
-    private void validHasAssociateList(Unidade unidade) {
-        List<Laboratory> lab = laboratoryService.findAllByUnidades(unidade);
-
-        if (!lab.isEmpty())
-            throw new FoundException("Não é possível alterar o status do exame, ele está associado com " + lab.size() +
-                    " laboratório(os).");
     }
 
 }
