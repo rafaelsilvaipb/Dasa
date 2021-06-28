@@ -18,9 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -89,75 +86,6 @@ public class UnidadeControllerTest {
 						.build());
 	}
 
-
-
-	//Cadastrar Lote
-
-	@Test
-	public void testCadastrarLoteUnidade() throws Exception {
-
-		mvc.perform(MockMvcRequestBuilders.post("/dasa/unidade/lote/")
-				.content(this.testCadastrarLoteUnidadeJson())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-	}
-
-	private String testCadastrarLoteUnidadeJson() throws JsonProcessingException {
-		Unidade ex1 =  Unidade.builder().nome_unidade("Biópsia").build();
-		Unidade ex2 =  Unidade.builder().nome_unidade("Vacinas").build();
-		Unidade ex3 =  Unidade.builder().nome_unidade("Raio X").build();
-		Unidade ex4 =  Unidade.builder().nome_unidade("Mamografia").build();
-		Unidade ex5 =  Unidade.builder().nome_unidade("Tomografia").build();
-
-		List<Unidade> listUnidades = new ArrayList<Unidade>();
-		listUnidades.add(ex1);
-		listUnidades.add(ex2);
-		listUnidades.add(ex3);
-		listUnidades.add(ex4);
-		listUnidades.add(ex5);
-
-		return new ObjectMapper().writeValueAsString(listUnidades);
-	}
-
-
-
-
-	//Alterar Lote
-
-	@Test
-	public void testAlterarLoteUnidade() throws Exception {
-
-		mvc.perform(MockMvcRequestBuilders.post("/dasa/unidade/lote/")
-				.content(this.testCadastrarLoteUnidadeJson())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-		mvc.perform(MockMvcRequestBuilders.put("/dasa/unidade/lote/")
-				.content(this.testAlterarLoteUnidadeJson())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-	}
-
-	private String testAlterarLoteUnidadeJson() throws JsonProcessingException {
-		Unidade ex1 =  Unidade.builder().cod_unidade(1L).nome_unidade("Biópsia - 1").build();
-		Unidade ex2 =  Unidade.builder().cod_unidade(1L).nome_unidade("Vacinas - 1 ").build();
-		Unidade ex3 =  Unidade.builder().cod_unidade(1L).nome_unidade("Raio X - 1").build();
-		Unidade ex4 =  Unidade.builder().cod_unidade(1L).nome_unidade("Mamografia - 1").build();
-		Unidade ex5 =  Unidade.builder().cod_unidade(1L).nome_unidade("Tomografia -1").build();
-
-		List<Unidade> listUnidade = new ArrayList<Unidade>();
-		listUnidade.add(ex1);
-		listUnidade.add(ex2);
-		listUnidade.add(ex3);
-		listUnidade.add(ex4);
-		listUnidade.add(ex5);
-
-		return new ObjectMapper().writeValueAsString(listUnidade);
-	}
-
 	//Listar Exames
 
 	@Test
@@ -190,40 +118,6 @@ public class UnidadeControllerTest {
 
 	private String getAssociarJson3() throws JsonProcessingException {
 		return new ObjectMapper().writeValueAsString(AssociarDTO.builder().idLaboratory(4L).idExame(2L).idUnidade(1L).build());
-	}
-
-
-	//Lista Laboratórios pelo nome do Exame
-
-	@Test
-	public void testListaLaboratoriosPeloNomeDaUnidade() throws Exception {
-
-		unidadeRepository.deleteAll();
-
-		mvc.perform(MockMvcRequestBuilders.post("/dasa/util/populate/")
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-		mvc.perform(MockMvcRequestBuilders.put("/dasa/util/desassociar/")
-				.content(getAssociarJson2())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-		mvc.perform(MockMvcRequestBuilders.put("/dasa/util/desassociar/")
-				.content(getAssociarJson3())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-		mvc.perform(MockMvcRequestBuilders.get("/dasa/unidade/nome/Unidade")
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(content().json("[{'cod_laboratorio':1,'nome_laboratorio':'Delboni - ALPHAVILLE'},{'cod_laboratorio':2,'nome_laboratorio':'Delboni - ALTO DE PINHEIROS'},{'cod_laboratorio':3,'nome_laboratorio':'Delboni - ALTO DE SANTANA'},{'cod_laboratorio':4,'nome_laboratorio':'Delboni - ATENDIMENTO MÓVEL'}]"));
-
-
 	}
 
 }

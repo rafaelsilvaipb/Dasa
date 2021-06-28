@@ -1,5 +1,5 @@
 # Dasa
- API's de Laboratório e Exames da Dasa
+ API's de Laboratório, Unidade e Exames da Dasa
 
 
 # Tecnologias
@@ -18,10 +18,6 @@
 
 Por se tratar de uma api de teste, usei o H2. Não é preciso instalar banco de dados local para a aplicação funcionar.
 
-# GIT
-
-Só fiz push depois de quase tudo terminado, e ainda deu problema que não consegui commitar separado, já foi direto como init commit. Relevem os comentários do Dockerfile, realmente estava me esforçando pra conseguir subir a aplicação no heroku como docker. Pode ter certeza que vou continuar tentando mesmo que não valha mais pro teste.
-
 
 # Heroku
 
@@ -33,10 +29,38 @@ https://dasa-api.herokuapp.com/swagger-ui.html#/
 
 # Como usar:
 
-Assim que entrar na aplicação, verá as API's em lista. Vá no Controller Exams e execute a api Populate.
-Essa API já vai gerar exames e laboratórios e vai associar um com o outro, para facilitar os testes.
+Assim que entrar na aplicação, verá as API's em lista. Vá no util-controller e execute a api Populate.
+Essa API já vai gerar exames, laboratórios e unidades e vai associar um com o outro, para facilitar os testes.
 
 
+```
+
+Popular banco
+https://dasa-api.herokuapp.com/swagger-ui.html#!/util-controller/populateInitUsingPOST
+
+```
+
+# Desafios:
+```
+
+Dado uma código de unidade, listar as unidades disponivel
+http://dasa-api.herokuapp.com/swagger-ui.html#!/exams-controller/unidadePorIDUsingGET
+
+```
+
+```
+
+Dado um código  de exame, listar  os exames disponivel
+http://dasa-api.herokuapp.com/swagger-ui.html#!/exams-controller/examePorIDUsingGET
+
+```
+
+```
+
+Dado um código  de laboratorio, listar todas os exames, unidades, que  atende aquele laboratorio.
+http://localhost:8080/swagger-ui.html#!/laboratory-controller/listarLaboratoriosPorIdUsingGET
+
+```
 
 # Build - Maven
 
@@ -79,10 +103,6 @@ http://localhost:8080/swagger-ui.html#/
 
 # Build Docker
 
-Infelizmente não consegui subir a aplicação no hub.docker e nem no heroku como container, até criei um repositório lá, mas precisaria de mais tempo pra fazer funcionar.
-
-Mas...para remediar, só seguir os passos abaixo que terá a aplicação rodadno num container também:
-
 Dentro do diretório raiz da aplicação, execute o comando abaixo:
 
 ```
@@ -96,7 +116,6 @@ Dentro ainda do diretório, digite o comando abaixo:
 
 
 ```
-$ docker login
 
 $ docker build -t dasa-api.jar .
 
@@ -123,7 +142,7 @@ Para executar a aplicação, basta fazer um docker run conforme abaixo.
 
 ```
 
-& docker run -p 9000:8080 dasa-api.jar 
+& docker run -p 8080:8080 dasa-api.jar 
 
 ```
 
@@ -135,6 +154,6 @@ Depois do run, vá no navegador e digite
 
 ```
 
-http://localhost:9000/swagger-ui.html#/ 
+http://localhost:8080/swagger-ui.html#/ 
 
 ```

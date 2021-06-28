@@ -1,7 +1,6 @@
 package br.com.dasa.api.controller;
 
 import br.com.dasa.api.dtos.AssociarDTO;
-import br.com.dasa.api.entities.Exames;
 import br.com.dasa.api.repository.ExamsRepository;
 import br.com.dasa.api.services.ExamesService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,10 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)

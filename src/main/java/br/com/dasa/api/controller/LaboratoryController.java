@@ -35,28 +35,12 @@ public class LaboratoryController {
                         dtoToLaboratory(laboratoryDTO))).get()));
     }
 
-    @PostMapping(value = "lote/")
-    public void adicionarLote(@RequestBody List<LaboratoryDTO> listLaboratoryDTO) throws ParseException {
-        for(LaboratoryDTO lab : listLaboratoryDTO){
-            adicionar(lab);
-        }
-    }
-
-
     @PutMapping
     public ResponseEntity<LaboratoryDTO> alterar(@RequestBody LaboratoryDTO laboratoryDTO) throws ParseException {
         validar.validLaboratorys(laboratoryDTO.getCod_laboratorio());
 
         return ResponseEntity.ok(laboratoryToDTO(laboratoryService.salvar(
                         dtoToLaboratory(laboratoryDTO))));
-
-    }
-
-    @PutMapping(value = "lote/")
-    public void alterarLote(@RequestBody List<LaboratoryDTO> listLaboratoryDTO) throws ParseException {
-        for(LaboratoryDTO lab : listLaboratoryDTO){
-            alterar(lab);
-        }
 
     }
 

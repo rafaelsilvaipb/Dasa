@@ -33,5 +33,4 @@ public class Laboratory implements Serializable {
     private List<Unidade> unidades;
 
 
-
 }

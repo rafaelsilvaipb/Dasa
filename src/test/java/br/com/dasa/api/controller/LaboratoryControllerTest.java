@@ -17,9 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -89,68 +86,6 @@ public class LaboratoryControllerTest {
 						.nome_laboratorio("Delboni - ALPHAVILLE - 1")
 						.build());
 	}
-
-	//Cadastrar Lote
-
-	@Test
-	public void testCadastrarLoteLaboratory() throws Exception {
-
-		mvc.perform(MockMvcRequestBuilders.post("/dasa/laboratory/lote/")
-				.content(this.testCadastrarLoteLaboratoryJson())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-	}
-
-	private String testCadastrarLoteLaboratoryJson() throws JsonProcessingException {
-		Laboratory lab1 = Laboratory.builder().nome_laboratorio("Delboni - ALPHAVILLE").build();
-		Laboratory lab2 = Laboratory.builder().nome_laboratorio("Delboni - ALTO DE PINHEIROS").build();
-		Laboratory lab3 = Laboratory.builder().nome_laboratorio("Delboni - ALTO DE SANTANA").build();
-		Laboratory lab4 = Laboratory.builder().nome_laboratorio("Delboni - ATENDIMENTO MÓVEL").build();
-
-		List<Laboratory> listLaboratory = new ArrayList<Laboratory>();
-		listLaboratory.add(lab1);
-		listLaboratory.add(lab2);
-		listLaboratory.add(lab3);
-		listLaboratory.add(lab4);
-
-		return new ObjectMapper().writeValueAsString(listLaboratory);
-	}
-
-
-	//Alterar Lote
-
-	@Test
-	public void testAlterarLoteLaboratory() throws Exception {
-
-		mvc.perform(MockMvcRequestBuilders.post("/dasa/laboratory/lote/")
-				.content(this.testCadastrarLoteLaboratoryJson())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-		mvc.perform(MockMvcRequestBuilders.put("/dasa/laboratory/lote/")
-				.content(this.testAlterarLoteLaboratoryJson())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-	}
-
-	private String testAlterarLoteLaboratoryJson() throws JsonProcessingException {
-		Laboratory lab1 = Laboratory.builder().cod_laboratorio(1L).nome_laboratorio("Delboni - ALPHAVILLE - 1").build();
-		Laboratory lab2 = Laboratory.builder().cod_laboratorio(2L).nome_laboratorio("Delboni - ALTO DE PINHEIROS - 1").build();
-		Laboratory lab3 = Laboratory.builder().cod_laboratorio(3L).nome_laboratorio("Delboni - ALTO DE SANTANA - 1").build();
-		Laboratory lab4 = Laboratory.builder().cod_laboratorio(4L).nome_laboratorio("Delboni - ATENDIMENTO MÓVEL - 1").build();
-
-		List<Laboratory> listLaboratory = new ArrayList<Laboratory>();
-		listLaboratory.add(lab1);
-		listLaboratory.add(lab2);
-		listLaboratory.add(lab3);
-		listLaboratory.add(lab4);
-
-		return new ObjectMapper().writeValueAsString(listLaboratory);
-	}
-
 
 	//Listar Laboratórios
 
