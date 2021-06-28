@@ -48,7 +48,7 @@ public class UnidadeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UnidadeDTO>> listarExames() {
+    public ResponseEntity<List<UnidadeDTO>> listarUnidades() {
         return ResponseEntity.ok(
                 unidadeService.findAll()
                         .stream()

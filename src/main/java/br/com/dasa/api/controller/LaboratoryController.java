@@ -45,7 +45,7 @@ public class LaboratoryController {
     }
 
     @GetMapping(value = "/{id}" )
-    public ResponseEntity<LaboratoryListDTO> listarLaboratoriosPorId(@PathVariable("id") long id) {
+    public ResponseEntity<LaboratoryListDTO> listarLaboratorioPorId(@PathVariable("id") long id) {
         validar.validLaboratorys(id);
         return ResponseEntity.ok(laboratoryListToDTO(laboratoryService.findById(id).get()));
     }
